@@ -1,0 +1,26 @@
+
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-image-updater-config
+  namespace: argocd
+data:
+  registries.conf: |
+    registries:
+    - name: nexus-docker-registry
+      prefix: nexus.palkas.ru
+      api_url: https://nexus.palkas.ru
+      credentials: pullsecret:argocd/nexus-docker-registry-secret
+
+
+# kubectl create secret docker-registry nexus-docker-registry-secret \
+#   --docker-server=https://nexus.palkas.ru \
+#   --docker-username=admin \
+#   --docker-password=123 \
+#   -n argocd
+
+kubectl create -n argocd secret docker-registry dockerhub-secret \
+  --docker-username admin \
+  --docker-password 123 \
+  --docker-server "https://nexus.palkas.ru"
